@@ -1,12 +1,15 @@
 package com.codegym.view;
 
+import com.codegym.controller.DiligenceManagement;
 import com.codegym.controller.StaffManagement;
+import com.codegym.model.Diligence;
 import com.codegym.model.Staff;
 
 import java.util.Scanner;
 
 public class StaffMenu {
     public Scanner scanner = new Scanner(System.in);
+    DiligenceManagement diligenceManagement = DiligenceManagement.getInstance();
 
     public void run() {
         StaffManagement staffManagement = StaffManagement.getInstance();
@@ -33,15 +36,12 @@ public class StaffMenu {
                     showDeleteStaff(staffManagement);
                     break;
                 }
+
                 case 5: {
-                    salaryStaff(staffManagement);
-                    break;
-                }
-                case 6: {
                     searchStaff(staffManagement);
                     break;
                 }
-                case 7: {
+                case 6: {
                     int choiceSort = -1;
                     do {
                         menuSort();
@@ -86,18 +86,14 @@ public class StaffMenu {
     }
 
 
-    private void salaryStaff(StaffManagement staffManagement) {
-        System.out.println("Tính tiền lương nhân viên");
-        staffManagement.salary();
-    }
-
-
     private void showDeleteStaff(StaffManagement staffManagement) {
         System.out.println("Xóa thông tin nhân viên");
         System.out.println("Nhập tên nhân viên cần xóa");
         String name = scanner.nextLine();
-        boolean isDeleted = staffManagement.deleteByName(name);
-        if (isDeleted) {
+        int index = staffManagement.findStaffByName(name);
+        if (index != -1) {
+            staffManagement.deleteByNameStaff(index);
+            diligenceManagement.deleteDiligence(index);
             System.out.println("Xóa thành công!");
         } else {
             System.out.println("Xóa lỗi do tên nhân viên không tồn tại!");
@@ -112,6 +108,7 @@ public class StaffMenu {
         if (index != -1) {
             Staff staff = inputStaffInfo();
             staffManagement.updateByName(name, staff);
+            diligenceManagement.updateDiligence(index, staff);
             System.out.println("Cập nhật thành công!");
         } else {
             System.out.println("Cập nhật bị lỗi do không tồn tại nhân viên cần tìm!");
@@ -119,9 +116,13 @@ public class StaffMenu {
     }
 
     private void showCreateStaff(StaffManagement staffManagement) {
-        System.out.println("Thêm học viên");
+        System.out.println("Thêm nhân viên");
         Staff staff = inputStaffInfo();
         staffManagement.addNew(staff);
+        Diligence diligence = new Diligence(staff);
+        diligenceManagement.addNew(diligence);
+
+
     }
 
     private void showAllStaff(StaffManagement staffManagement) {
@@ -157,9 +158,8 @@ public class StaffMenu {
         System.out.println("2. Thêm nhân viên mới");
         System.out.println("3. Cập nhật nhân viên");
         System.out.println("4. Xóa");
-        System.out.println("5. Tính lương nhân viên");
-        System.out.println("6. Tìm kiếm");
-        System.out.println("7. Phân loại nhân viên");
+        System.out.println("5. Tìm kiếm");
+        System.out.println("6. Phân loại nhân viên");
         System.out.println("0. Quay lại");
     }
 }

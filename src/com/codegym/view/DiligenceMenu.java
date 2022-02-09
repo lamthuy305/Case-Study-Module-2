@@ -10,29 +10,44 @@ public class DiligenceMenu {
 
     public void run() {
 
-        System.out.println("---Diligence Management---");
-        System.out.println("Nhập ID");
-        String id = scanner.nextLine();
-        int index = diligenceManagement.findById(id);
-        diligenceManagement.showDeligence(index);
+            System.out.println("---Diligence Management---");
+            System.out.println("Nhập ID");
+            String id = scanner.nextLine();
+            int index = diligenceManagement.findById(id);
+            if (index != -1) {
 
-        int choice = -1;
-        do {
-            menu();
-            System.out.println("Nhập lựa chọn của bạn");
-            choice = scanner.nextInt();
-            scanner.nextLine();
+                diligenceManagement.showDeligence(index);
+                int choice = -1;
+                do {
+                    menu();
+                    System.out.println("Nhập lựa chọn của bạn");
+                    choice = scanner.nextInt();
+                    scanner.nextLine();
 
-            switch (choice) {
-                case 1: {
-                    diligenceManagement.addDayOff(index);
-                    break;
-                }
+                    switch (choice) {
+                        case 1: {
+                            diligenceManagement.addDayOff(index);
+                            break;
+                        }
+                        case 2: {
+                            diligenceManagement.removeDayOff(index);
+                            break;
+                        }
+                        case 3: {
+                            diligenceManagement.addLateTime(index);
+                            break;
+                        }
+                        case 4: {
+                            diligenceManagement.removeLateTime(index);
+                            break;
+                        }
+
+                    }
+                } while (choice != 0);
+            } else {
+                System.err.println("ID nhập vào không tồn tại");
             }
-        } while (choice != 0);
-
-
-    }
+        }
 
 
     private void menu() {

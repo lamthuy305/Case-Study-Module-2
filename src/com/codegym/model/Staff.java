@@ -78,8 +78,8 @@ public class Staff implements Serializable {
 
     @Override
     public String toString() {
-        if (fulltime && on) return this.id + ", " + this.name + ", " + this.phone + ", " + this.hometown+", fulltime, còn làm việc";
-        if (fulltime == false && on == true) return this.id + ", " + this.name + ", " + this.phone + ", " + this.hometown+", parttime, còn làm việc";
+        if (fulltime && on) return this.id + ", " + this.name + ", " + this.phone + ", " + this.hometown+", fulltime";
+        if (fulltime == false && on == true) return this.id + ", " + this.name + ", " + this.phone + ", " + this.hometown+", parttime";
         if (fulltime == false && on == false) return this.id + ", " + this.name + ", " + this.phone + ", " + this.hometown+", parttime, đã nghỉ việc";
         return this.id + ", " + this.name + ", " + this.phone + ", " + this.hometown+", fulltime, đã nghỉ việc";
     }

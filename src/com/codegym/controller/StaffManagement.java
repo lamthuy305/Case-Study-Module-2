@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StaffManagement implements GeneralManagement<Staff>, ReadFile, WriteFile {
-    public static final int SALARYFULLTIME = 9000000;
-    public static final int SALARYPARTTIME = 4000000;
 
     private static StaffManagement staffManagement;
     private List<Staff> staffs = new ArrayList<>();
+
 
     private StaffManagement() {
         File file = new File("staff.txt");
@@ -64,7 +63,11 @@ public class StaffManagement implements GeneralManagement<Staff>, ReadFile, Writ
         return index;
     }
 
-    public Staff displayStaff(int index){
+    public void deleteByNameStaff(int index) {
+        this.staffs.remove(index);
+    }
+
+    public Staff displayStaff(int index) {
         return staffs.get(index);
     }
 
@@ -89,6 +92,11 @@ public class StaffManagement implements GeneralManagement<Staff>, ReadFile, Writ
     public void updateByName(String name, Staff staff) {
         int index = findStaffByName(name);
         this.staffs.set(index, staff);
+        try {
+            writeFile("staff.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -96,6 +104,11 @@ public class StaffManagement implements GeneralManagement<Staff>, ReadFile, Writ
         int index = findStaffByName(name);
         if (index != -1) {
             this.staffs.remove(index);
+            try {
+                writeFile("staff.txt");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return true;
         } else {
             return false;
@@ -123,28 +136,27 @@ public class StaffManagement implements GeneralManagement<Staff>, ReadFile, Writ
     }
 
 
-    public void salary() {
-        for (Staff staff : staffs) {
-            if (staff.isFulltime() && staff.isOn()) {
-                System.out.println(staff + ", lương" + SALARYFULLTIME);
-
-            } else if (staff.isFulltime() == false && staff.isOn() == true) {
-                System.out.println(staff + ", lương"+ SALARYPARTTIME);
-
-            } else {
-                System.out.println(staff + ", lương 0");
-            }
-
-        }
-    }
-
-    public int findById(String id){
-    int index = -1;
+    public int findById(String id) {
+        int index = -1;
         for (int i = 0; i < size(); i++) {
-           if (staffs.get(i).getId().equals(id)){
-               return i;
-           }
+            if (staffs.get(i).getId().equals(id)) {
+                return i;
+            }
         }
         return index;
+    }
+
+    public boolean isFullTime(int index){
+        if (staffs.get(index).isFulltime()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isOn(int index){
+        if (staffs.get(index).isOn()) {
+            return true;
+        }
+        return false;
     }
 }

@@ -17,10 +17,7 @@ public class DiligenceManagement implements GeneralManagement<Diligence>, ReadFi
 
 
     private DiligenceManagement() {
-
         File file = new File("diligence.txt");
-        writeToFileDiligence();
-
         if (file.exists()) {
             try {
                 readFile("diligence.txt");
@@ -30,13 +27,6 @@ public class DiligenceManagement implements GeneralManagement<Diligence>, ReadFi
         }
     }
 
-    private void writeToFileDiligence() {
-        for (int i = 0; i < staffManagement.size(); i++) {
-            Staff staff = staffManagement.displayStaff(i);
-            Diligence diligence = new Diligence(staff);
-            addNew(diligence);
-        }
-    }
 
     public static DiligenceManagement getInstance() {
         if (diligenceManagement == null) {
@@ -45,22 +35,101 @@ public class DiligenceManagement implements GeneralManagement<Diligence>, ReadFi
         return diligenceManagement;
     }
 
+
     public void addDayOff(int index) {
 
         int count = diligences.get(index).getDayOff();
         System.out.println("Số lần nghỉ cũ " + count);
         count++;
         System.out.println("Số lần nghỉ mới " + count);
-
         diligences.get(index).setDayOff(count);
         System.out.println("Đã thêm xong");
-
         showDeligence(index);
         try {
             writeFile("diligence.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addLateTime(int index) {
+        int count = diligences.get(index).getLateTime();
+        System.out.println("Số lần đi muộn cũ " + count);
+        count++;
+        System.out.println("Số lần đi muộn mới " + count);
+        diligences.get(index).setLateTime(count);
+        System.out.println("Đã thêm xong");
+        showDeligence(index);
+        try {
+            writeFile("diligence.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void removeDayOff(int index) {
+        int count = diligences.get(index).getDayOff();
+        if (count > 0) {
+            System.out.println("Số lần nghỉ cũ " + count);
+            count--;
+            System.out.println("Số lần nghỉ mới " + count);
+            diligences.get(index).setDayOff(count);
+            System.out.println("Đã xóa 1 lần");
+            showDeligence(index);
+            try {
+                writeFile("diligence.txt");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.err.println("Không thể xóa khi số ngày nghỉ đã bằng 0");
+        }
+    }
+
+    public void removeLateTime(int index) {
+        int count = diligences.get(index).getLateTime();
+        if (count > 0) {
+            System.out.println("Số lần đi muộn cũ " + count);
+            count--;
+            System.out.println("Số lần đi muộn mới " + count);
+            diligences.get(index).setLateTime(count);
+            System.out.println("Đã xóa 1 lần");
+            showDeligence(index);
+            try {
+                writeFile("diligence.txt");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.err.println("Không thể xóa khi số lần đi muộn đã bằng 0");
+        }
+    }
+
+    public void updateDiligence(int index, Staff staff) {
+        diligences.get(index).setStaff(staff);
+        try {
+            writeFile("diligence.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteDiligence(int index) {
+        diligences.remove(index);
+        try {
+            writeFile("diligence.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int showDayOff(int index) {
+        return diligences.get(index).getDayOff();
+    }
+
+    public int showLateTime(int index) {
+        return diligences.get(index).getLateTime();
     }
 
     public void showDeligence(int index) {
