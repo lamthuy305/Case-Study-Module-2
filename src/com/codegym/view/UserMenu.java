@@ -67,9 +67,11 @@ public class UserMenu {
     }
 
     private User createUser() {
+        System.out.println("Nhập họ tên");
+        String name = scanner.nextLine();
         String username = inputUsername();
         String password = inputPassword();
-        User user = new User(username, password);
+        User user = new User(name, username, password);
         return user;
     }
 
@@ -114,9 +116,10 @@ public class UserMenu {
         String username = scanner.nextLine();
         int index = userManagement.findusername(username);
         if (index != -1) {
+            String name = userManagement.findname(index);
             System.out.println("Nhập password mới");
             String password = scanner.nextLine();
-            User user = new User(username, password);
+            User user = new User(name,username, password);
             userManagement.updateByName(username, user);
             System.out.println("Đổi thành công!");
         } else {

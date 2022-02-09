@@ -23,7 +23,15 @@ public class Login{
         String password = scanner.nextLine();
         boolean isLogin = userManagement.checkUserLogin(username, password);
         if (isLogin) {
-            managementMenu.run(username);
+            if (username.equals("admin")) {
+                String name = "Admin";
+                managementMenu.run(name, username, password);
+            } else {
+                int index = userManagement.findusername(username);
+                String name = userManagement.findname(index);
+                managementMenu.run(name, username, password);
+            }
+
         } else {
             System.err.println("Username hoặc password không đúng!");
         }

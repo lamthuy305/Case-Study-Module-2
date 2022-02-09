@@ -64,6 +64,9 @@ public class StaffManagement implements GeneralManagement<Staff>, ReadFile, Writ
         return index;
     }
 
+    public Staff displayStaff(int index){
+        return staffs.get(index);
+    }
 
     @Override
     public void displayAll() {
@@ -133,5 +136,15 @@ public class StaffManagement implements GeneralManagement<Staff>, ReadFile, Writ
             }
 
         }
+    }
+
+    public int findById(String id){
+    int index = -1;
+        for (int i = 0; i < size(); i++) {
+           if (staffs.get(i).getId().equals(id)){
+               return i;
+           }
+        }
+        return index;
     }
 }

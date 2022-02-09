@@ -5,12 +5,13 @@ import java.util.Scanner;
 public class ManagementMenu {
     public static Scanner scanner = new Scanner(System.in);
 
-    public void run(String username) {
+    public void run(String name, String username, String password) {
         UserMenu userMenu = new UserMenu();
         StaffMenu staffMenu = new StaffMenu();
 
-        if (username.equals("admin123")) {
-            System.out.println("Đăng nhập thành công tài khoản quản lý");
+        if (username.equals("admin")) {
+            System.out.println("Đăng nhập thành công !!!");
+            System.out.println("---Xin chào Admin---");
             int choice = -1;
             do {
                 menu();
@@ -28,7 +29,8 @@ public class ManagementMenu {
                 }
             } while (choice != 0);
         } else {
-            System.out.println("Đăng nhập thành công tài khoản thường");
+            System.out.println("Đăng nhập thành công !!!");
+            System.out.println("---Xin chào " + name + "---");
             staffMenu.run();
         }
     }

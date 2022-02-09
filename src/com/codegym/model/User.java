@@ -3,6 +3,8 @@ package com.codegym.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
+    private String name;
+
     private String username;
 
     private String password;
@@ -10,9 +12,18 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String name, String username, String password) {
+        this.name = name;
         this.username = username;
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {
@@ -33,6 +44,6 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return this.username + ", " + this.password;
+        return this.name + ", " + this.username + ", " + this.password;
     }
 }
