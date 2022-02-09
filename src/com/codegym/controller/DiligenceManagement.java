@@ -18,16 +18,25 @@ public class DiligenceManagement implements GeneralManagement<Diligence>, ReadFi
 
     private DiligenceManagement() {
 
-        File file = new File("deligence.txt");
+        File file = new File("diligence.txt");
+        writeToFileDiligence();
+
         if (file.exists()) {
             try {
-                readFile("deligence.txt");
+                readFile("diligence.txt");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    private void writeToFileDiligence() {
+        for (int i = 0; i < staffManagement.size(); i++) {
+            Staff staff = staffManagement.displayStaff(i);
+            Diligence diligence = new Diligence(staff);
+            addNew(diligence);
+        }
+    }
 
     public static DiligenceManagement getInstance() {
         if (diligenceManagement == null) {
@@ -36,12 +45,17 @@ public class DiligenceManagement implements GeneralManagement<Diligence>, ReadFi
         return diligenceManagement;
     }
 
-    public void addDayOff(String id) {
-        int index = staffManagement.findById(id);
+    public void addDayOff(int index) {
+
         int count = diligences.get(index).getDayOff();
+        System.out.println("Số lần nghỉ cũ " + count);
         count++;
+        System.out.println("Số lần nghỉ mới " + count);
+
         diligences.get(index).setDayOff(count);
-        System.out.println("Đã xong");
+        System.out.println("Đã thêm xong");
+
+        showDeligence(index);
         try {
             writeFile("diligence.txt");
         } catch (IOException e) {
@@ -105,6 +119,8 @@ public class DiligenceManagement implements GeneralManagement<Diligence>, ReadFi
         return null;
     }
 
-
+    public int findById(String id) {
+        return staffManagement.findById(id);
+    }
 
 }
