@@ -135,7 +135,7 @@ public class StaffMenu {
     }
 
     private Staff inputStaffInfo() {
-        System.out.println("Nhập mã nhân viên:");
+        System.out.println("Nhập mã nhân viên(tên viết tắt + năm sinh): ");
         String id = scanner.nextLine();
         System.out.println("Nhập tên nhân viên:");
         String name = scanner.nextLine();
@@ -144,9 +144,9 @@ public class StaffMenu {
         scanner.nextLine();
         System.out.println("Nhập quê quán nhân viên:");
         String hometown = scanner.nextLine();
-        System.out.println("Có làm việc fulltime không:");
+        System.out.println("Có làm việc fulltime không(true/false):");
         boolean fulltime = scanner.nextBoolean();
-        System.out.println("Nhập trạng thái làm việc:");
+        System.out.println("Nhập trạng thái làm việc(true/false):");
         boolean on = scanner.nextBoolean();
         Staff staff = new Staff(id, name, phone, hometown, fulltime, on);
         return staff;

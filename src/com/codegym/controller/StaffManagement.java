@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StaffManagement implements GeneralManagement<Staff>, ReadFile, WriteFile {
+    public static final int SALARYFULLTIME = 9000000;
+    public static final int SALARYPARTTIME = 4000000;
+
     private static StaffManagement staffManagement;
     private List<Staff> staffs = new ArrayList<>();
 
@@ -119,11 +122,16 @@ public class StaffManagement implements GeneralManagement<Staff>, ReadFile, Writ
 
     public void salary() {
         for (Staff staff : staffs) {
-            if (staff.isFulltime()) {
-                System.out.println(staff + ", 9000000");
+            if (staff.isFulltime() && staff.isOn()) {
+                System.out.println(staff + ", lương" + SALARYFULLTIME);
+
+            } else if (staff.isFulltime() == false && staff.isOn() == true) {
+                System.out.println(staff + ", lương"+ SALARYPARTTIME);
+
             } else {
-                System.out.println(staff + ", 4000000");
+                System.out.println(staff + ", lương 0");
             }
+
         }
     }
 }

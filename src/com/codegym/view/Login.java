@@ -23,7 +23,6 @@ public class Login{
         String password = scanner.nextLine();
         boolean isLogin = userManagement.checkUserLogin(username, password);
         if (isLogin) {
-            System.out.println("Đăng nhập thành công!");
             managementMenu.run(username);
         } else {
             System.err.println("Username hoặc password không đúng!");
