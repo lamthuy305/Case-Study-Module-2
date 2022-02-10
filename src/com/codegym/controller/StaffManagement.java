@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StaffManagement implements GeneralManagement<Staff>, ReadFile, WriteFile {
+public class StaffManagement implements ReadFile, WriteFile {
 
     private static StaffManagement staffManagement;
     private List<Staff> staffs = new ArrayList<>();
@@ -30,8 +30,12 @@ public class StaffManagement implements GeneralManagement<Staff>, ReadFile, Writ
         return staffManagement;
     }
 
+    public int size() {
+        return staffs.size();
+    }
 
-    public void fulltimeStaff() {
+
+    public void fullTimeStaff() {
         for (Staff staff : staffs) {
             if (staff.isFulltime()) {
                 System.out.println(staff);
@@ -39,7 +43,7 @@ public class StaffManagement implements GeneralManagement<Staff>, ReadFile, Writ
         }
     }
 
-    public void parttimeStaff() {
+    public void partTimeStaff() {
         for (Staff staff : staffs) {
             if (staff.isFulltime() == false) {
                 System.out.println(staff);
@@ -47,15 +51,11 @@ public class StaffManagement implements GeneralManagement<Staff>, ReadFile, Writ
         }
     }
 
-    public int size() {
-        return staffs.size();
-    }
 
-
-    public int findStaffByName(String name) {
+    public int findStaffById(String id) {
         int index = -1;
         for (int i = 0; i < staffs.size(); i++) {
-            if (staffs.get(i).getName().equals(name)) {
+            if (staffs.get(i).getId().equals(id)) {
                 index = i;
                 break;
             }
@@ -63,22 +63,27 @@ public class StaffManagement implements GeneralManagement<Staff>, ReadFile, Writ
         return index;
     }
 
-    public void deleteByNameStaff(int index) {
+    public void deleteStaff(int index) {
         this.staffs.remove(index);
+        try {
+            writeFile("staff.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public Staff displayStaff(int index) {
         return staffs.get(index);
     }
 
-    @Override
+
     public void displayAll() {
         for (Staff staff : staffs) {
             System.out.println(staff);
         }
     }
 
-    @Override
+
     public void addNew(Staff staff) {
         staffs.add(staff);
         try {
@@ -88,9 +93,9 @@ public class StaffManagement implements GeneralManagement<Staff>, ReadFile, Writ
         }
     }
 
-    @Override
-    public void updateByName(String name, Staff staff) {
-        int index = findStaffByName(name);
+
+    public void updateById(String id, Staff staff) {
+        int index = findStaffById(id);
         this.staffs.set(index, staff);
         try {
             writeFile("staff.txt");
@@ -99,36 +104,20 @@ public class StaffManagement implements GeneralManagement<Staff>, ReadFile, Writ
         }
     }
 
-    @Override
-    public boolean deleteByName(String name) {
-        int index = findStaffByName(name);
-        if (index != -1) {
-            this.staffs.remove(index);
-            try {
-                writeFile("staff.txt");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
 
-    @Override
-    public Staff getByName(String name) {
-        int index = findStaffByName(name);
+    public Staff getById(String id) {
+        int index = findStaffById(id);
         return staffs.get(index);
     }
 
-    @Override
+
     public void readFile(String path) throws IOException, ClassNotFoundException {
         InputStream is = new FileInputStream(path);
         ObjectInputStream ois = new ObjectInputStream(is);
         this.staffs = (List<Staff>) ois.readObject();
     }
 
-    @Override
+
     public void writeFile(String path) throws IOException {
         OutputStream os = new FileOutputStream(path);
         ObjectOutputStream oos = new ObjectOutputStream(os);
@@ -146,14 +135,14 @@ public class StaffManagement implements GeneralManagement<Staff>, ReadFile, Writ
         return index;
     }
 
-    public boolean isFullTime(int index){
+    public boolean isFullTime(int index) {
         if (staffs.get(index).isFulltime()) {
             return true;
         }
         return false;
     }
 
-    public boolean isOn(int index){
+    public boolean isOn(int index) {
         if (staffs.get(index).isOn()) {
             return true;
         }

@@ -9,62 +9,61 @@ public class UserMenu {
     Scanner scanner = new Scanner(System.in);
     UserManagement userManagement = UserManagement.getInstance();
     public void run(String username) {
-        int choice = -1;
+        int choiceUserMenu = -1;
         do {
             menu();
             System.out.println("Nhập lựa chọn của bạn");
-            choice = scanner.nextInt();
+            choiceUserMenu = scanner.nextInt();
             scanner.nextLine();
 
-            switch (choice) {
+            switch (choiceUserMenu) {
                 case 1: {
-                    System.out.println("User đăng đăng nhập là ");
-                    System.out.println(username);
-                    break;
-                }
-                case 2: {
                     System.out.println("Hiển thị danh sách User đã có");
                     userManagement.displayAll();
                     break;
                 }
-                case 3: {
+                case 2: {
                     doRegister();
                     break;
                 }
-                case 4: {
+                case 3: {
                     updatepassword(userManagement);
                     break;
                 }
-                case 5: {
+                case 4: {
                     removeUser(userManagement);
                     break;
                 }
-                case 6: {
+                case 5: {
                     searchUser(userManagement);
                     break;
                 }
-
+                default:{
+                    System.out.println("Nhập sai, mời nhập lại");
+                }
             }
 
-        } while (choice != 0);
+        } while (choiceUserMenu != 0);
 
     }
+
 
     private void menu() {
-        System.out.println("1. Hiển thị User đang đăng nhập");
-        System.out.println("2. Hiển thị danh sách User đã có");
-        System.out.println("3. Thêm User mới");
-        System.out.println("4. Cập nhật password");
-        System.out.println("5. Xóa User");
-        System.out.println("6. Tìm kiếm User");
+        System.out.println("1. Hiển thị danh sách User đã có");
+        System.out.println("2. Thêm User mới");
+        System.out.println("3. Cập nhật password");
+        System.out.println("4. Xóa User");
+        System.out.println("5. Tìm kiếm User");
         System.out.println("0. Quay lại");
     }
+
 
     private void doRegister() {
         System.out.println("Đăng ký tài khoản mới!");
         User user = createUser();
         userManagement.register(user);
     }
+
 
     private User createUser() {
         System.out.println("Nhập họ tên");
@@ -74,6 +73,7 @@ public class UserMenu {
         User user = new User(name, username, password);
         return user;
     }
+
 
     private String inputPassword() {
         String password;
@@ -89,6 +89,7 @@ public class UserMenu {
         return password;
     }
 
+
     private String inputUsername() {
         String username;
         do {
@@ -101,14 +102,15 @@ public class UserMenu {
             } else if (userManagement.checkUsernameExist(username)) {
                 System.err.println("Tài khoản này đã được đăng ký!");
             }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
         } while (username.length() < 6 || username.length() > 12 || userManagement.checkUsernameExist(username));
         return username;
     }
+
 
     private void updatepassword(UserManagement userManagement) {
         System.out.println("Đổi password");
@@ -127,6 +129,7 @@ public class UserMenu {
         }
     }
 
+
     private void removeUser(UserManagement userManagement) {
         System.out.println("Xóa User");
         System.out.println("Nhập username cần xóa");
@@ -138,6 +141,7 @@ public class UserMenu {
             System.out.println("Xóa lỗi do tên nhân viên không tồn tại!");
         }
     }
+
 
     private void searchUser(UserManagement userManagement) {
         System.out.println("Tìm kiếm User");

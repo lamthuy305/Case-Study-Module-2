@@ -8,7 +8,7 @@ public class Staff implements Serializable {
 
     private String name;
 
-    private int phone;
+    private String phone;
 
     private String hometown;
 
@@ -19,7 +19,7 @@ public class Staff implements Serializable {
     public Staff() {
     }
 
-    public Staff(String id, String name, int phone, String hometown, boolean fulltime, boolean on) {
+    public Staff(String id, String name, String phone, String hometown, boolean fulltime, boolean on) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -44,11 +44,11 @@ public class Staff implements Serializable {
         this.name = name;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

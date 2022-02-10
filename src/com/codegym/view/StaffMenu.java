@@ -11,15 +11,16 @@ public class StaffMenu {
     public Scanner scanner = new Scanner(System.in);
     DiligenceManagement diligenceManagement = DiligenceManagement.getInstance();
 
+
     public void run() {
         StaffManagement staffManagement = StaffManagement.getInstance();
-        int choice = -1;
+        int choiceStaffMenu = -1;
         do {
             menu();
             System.out.println("Nhập lựa chọn của bạn");
-            choice = scanner.nextInt();
+            choiceStaffMenu = scanner.nextInt();
             scanner.nextLine();
-            switch (choice) {
+            switch (choiceStaffMenu) {
                 case 1: {
                     showAllStaff(staffManagement);
                     break;
@@ -36,7 +37,6 @@ public class StaffMenu {
                     showDeleteStaff(staffManagement);
                     break;
                 }
-
                 case 5: {
                     searchStaff(staffManagement);
                     break;
@@ -50,21 +50,28 @@ public class StaffMenu {
                         switch (choiceSort) {
                             case 1: {
                                 System.out.println("Danh sách nhân viên full time");
-                                staffManagement.fulltimeStaff();
+                                staffManagement.fullTimeStaff();
                                 break;
                             }
                             case 2: {
                                 System.out.println("Danh sách nhân viên part time");
-                                staffManagement.parttimeStaff();
+                                staffManagement.partTimeStaff();
                                 break;
+                            }
+                            default:{
+                                System.out.println("Nhập sai, mời nhập lại");
                             }
                         }
                     } while (choiceSort != 0);
                     break;
                 }
+                default:{
+                    System.out.println("Nhập sai, mời nhập lại");
+                }
             }
-        } while (choice != 0);
+        } while (choiceStaffMenu != 0);
     }
+
 
     private void menuSort() {
         System.out.println("Phân loại nhân viên");
@@ -73,13 +80,14 @@ public class StaffMenu {
         System.out.println("0. Quay lại");
     }
 
+
     private void searchStaff(StaffManagement staffManagement) {
         System.out.println("Tìm kiếm nhân viên");
-        System.out.println("Nhập tên nhân viên cần tìm");
-        String name = scanner.nextLine();
-        int index = staffManagement.findStaffByName(name);
+        System.out.println("Nhập ID nhân viên cần tìm");
+        String id = scanner.nextLine();
+        int index = staffManagement.findStaffById(id);
         if (index != -1) {
-            System.out.println("Thông tin nhân viên cần tìm: " + staffManagement.getByName(name));
+            System.out.println("Thông tin nhân viên cần tìm: " + staffManagement.getById(id));
         } else {
             System.out.println("Không tìm thấy");
         }
@@ -88,11 +96,11 @@ public class StaffMenu {
 
     private void showDeleteStaff(StaffManagement staffManagement) {
         System.out.println("Xóa thông tin nhân viên");
-        System.out.println("Nhập tên nhân viên cần xóa");
-        String name = scanner.nextLine();
-        int index = staffManagement.findStaffByName(name);
+        System.out.println("Nhập ID nhân viên cần xóa");
+        String id = scanner.nextLine();
+        int index = staffManagement.findStaffById(id);
         if (index != -1) {
-            staffManagement.deleteByNameStaff(index);
+            staffManagement.deleteStaff(index);
             diligenceManagement.deleteDiligence(index);
             System.out.println("Xóa thành công!");
         } else {
@@ -100,20 +108,22 @@ public class StaffMenu {
         }
     }
 
+
     private void showUpdateStaff(StaffManagement staffManagement) {
         System.out.println("Chỉnh sửa thông tin nhân viên");
-        System.out.println("Nhập tên nhân viên cần chỉnh sửa thông tin");
-        String name = scanner.nextLine();
-        int index = staffManagement.findStaffByName(name);
+        System.out.println("Nhập ID nhân viên cần chỉnh sửa");
+        String id = scanner.nextLine();
+        int index = staffManagement.findStaffById(id);
         if (index != -1) {
             Staff staff = inputStaffInfo();
-            staffManagement.updateByName(name, staff);
+            staffManagement.updateById(id, staff);
             diligenceManagement.updateDiligence(index, staff);
             System.out.println("Cập nhật thành công!");
         } else {
-            System.out.println("Cập nhật bị lỗi do không tồn tại nhân viên cần tìm!");
+            System.out.println("Cập nhật bị lỗi do không tồn tại ID cần tìm!");
         }
     }
+
 
     private void showCreateStaff(StaffManagement staffManagement) {
         System.out.println("Thêm nhân viên");
@@ -121,9 +131,8 @@ public class StaffMenu {
         staffManagement.addNew(staff);
         Diligence diligence = new Diligence(staff);
         diligenceManagement.addNew(diligence);
-
-
     }
+
 
     private void showAllStaff(StaffManagement staffManagement) {
         int size = staffManagement.size();
@@ -135,14 +144,21 @@ public class StaffMenu {
         }
     }
 
+
     private Staff inputStaffInfo() {
-        System.out.println("Nhập mã nhân viên(tên viết tắt + năm sinh): ");
+        System.out.println("Nhập thông tin nhân viên");
+        System.out.println("Nhập ID nhân viên (tên + họ, tên đệm viết tắt + năm sinh): ");
         String id = scanner.nextLine();
         System.out.println("Nhập tên nhân viên:");
         String name = scanner.nextLine();
-        System.out.println("Nhập số điện thoại nhân viên");
-        int phone = scanner.nextInt();
-        scanner.nextLine();
+        String phone;
+        do {
+            System.out.println("Nhập số điện thoại nhân viên");
+            phone = scanner.nextLine();
+            if (phone.length() != 10) {
+                System.out.println("Số điện thoại phải có 10 số");
+            }
+        } while (phone.length() != 10);
         System.out.println("Nhập quê quán nhân viên:");
         String hometown = scanner.nextLine();
         System.out.println("Có làm việc fulltime không(true/false):");
@@ -152,6 +168,7 @@ public class StaffMenu {
         Staff staff = new Staff(id, name, phone, hometown, fulltime, on);
         return staff;
     }
+
 
     private void menu() {
         System.out.println("1. Hiển thị danh sách nhân viên");

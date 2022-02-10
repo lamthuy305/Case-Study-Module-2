@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserManagement implements GeneralManagement<User>,ReadFile,WriteFile{
+public class UserManagement implements ReadFile, WriteFile {
 
     private static UserManagement userManagement;
 
@@ -30,9 +30,9 @@ public class UserManagement implements GeneralManagement<User>,ReadFile,WriteFil
         return userManagement;
     }
 
-public String findname(int index) {
+    public String findname(int index) {
         return users.get(index).getName();
-}
+    }
 
     public int findusername(String username) {
         int index = -1;
@@ -92,19 +92,14 @@ public String findname(int index) {
         return isLogin;
     }
 
-    @Override
+
     public void displayAll() {
         for (User user : users) {
             System.out.println(user);
         }
     }
 
-    @Override
-    public void addNew(User user) {
 
-    }
-
-    @Override
     public void updateByName(String name, User user) {
         int index = findusername(name);
         users.set(index, user);
@@ -115,7 +110,7 @@ public String findname(int index) {
         }
     }
 
-    @Override
+
     public boolean deleteByName(String name) {
         int index = findusername(name);
         if (index != -1) {
@@ -131,7 +126,7 @@ public String findname(int index) {
         }
     }
 
-    @Override
+
     public User getByName(String username) {
         int index = findusername(username);
         return users.get(index);

@@ -10,10 +10,12 @@ public class Login{
     UserManagement userManagement = UserManagement.getInstance();
     private ManagementMenu managementMenu = new ManagementMenu();
 
+
     public void run() {
         System.out.println("---Ứng dụng quản lý nhân viên---");
         doLogin();
     }
+
 
     private void doLogin() {
         System.out.println("---Đăng nhập---");
@@ -25,13 +27,12 @@ public class Login{
         if (isLogin) {
             if (username.equals("admin")) {
                 String name = "Admin";
-                managementMenu.run(name, username, password);
+                managementMenu.run(name, username);
             } else {
                 int index = userManagement.findusername(username);
                 String name = userManagement.findname(index);
-                managementMenu.run(name, username, password);
+                managementMenu.run(name, username);
             }
-
         } else {
             System.err.println("Username hoặc password không đúng!");
         }

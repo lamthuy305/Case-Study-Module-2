@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiligenceManagement implements GeneralManagement<Diligence>, ReadFile, WriteFile {
+public class DiligenceManagement implements ReadFile, WriteFile {
 
     private static DiligenceManagement diligenceManagement;
 
@@ -35,16 +35,18 @@ public class DiligenceManagement implements GeneralManagement<Diligence>, ReadFi
         return diligenceManagement;
     }
 
+    public int size() {
+        return diligenceManagement.size();
+    }
+
 
     public void addDayOff(int index) {
 
         int count = diligences.get(index).getDayOff();
-        System.out.println("Số lần nghỉ cũ " + count);
         count++;
-        System.out.println("Số lần nghỉ mới " + count);
         diligences.get(index).setDayOff(count);
-        System.out.println("Đã thêm xong");
-        showDeligence(index);
+        System.out.println("Đã thêm 1 ngày nghỉ");
+        showDiligence(index);
         try {
             writeFile("diligence.txt");
         } catch (IOException e) {
@@ -54,12 +56,10 @@ public class DiligenceManagement implements GeneralManagement<Diligence>, ReadFi
 
     public void addLateTime(int index) {
         int count = diligences.get(index).getLateTime();
-        System.out.println("Số lần đi muộn cũ " + count);
         count++;
-        System.out.println("Số lần đi muộn mới " + count);
         diligences.get(index).setLateTime(count);
-        System.out.println("Đã thêm xong");
-        showDeligence(index);
+        System.out.println("Đã thêm 1 lần đi muộn");
+        showDiligence(index);
         try {
             writeFile("diligence.txt");
         } catch (IOException e) {
@@ -68,41 +68,55 @@ public class DiligenceManagement implements GeneralManagement<Diligence>, ReadFi
     }
 
 
+    public int findById(String id) {
+        return staffManagement.findById(id);
+    }
+
+
     public void removeDayOff(int index) {
         int count = diligences.get(index).getDayOff();
         if (count > 0) {
-            System.out.println("Số lần nghỉ cũ " + count);
             count--;
-            System.out.println("Số lần nghỉ mới " + count);
             diligences.get(index).setDayOff(count);
-            System.out.println("Đã xóa 1 lần");
-            showDeligence(index);
+            System.out.println("Đã giảm 1 ngày nghỉ");
+            showDiligence(index);
             try {
                 writeFile("diligence.txt");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            System.err.println("Không thể xóa khi số ngày nghỉ đã bằng 0");
+            System.err.println("Không thể giảm khi số ngày nghỉ đã bằng 0");
         }
     }
+
 
     public void removeLateTime(int index) {
         int count = diligences.get(index).getLateTime();
         if (count > 0) {
-            System.out.println("Số lần đi muộn cũ " + count);
             count--;
-            System.out.println("Số lần đi muộn mới " + count);
             diligences.get(index).setLateTime(count);
-            System.out.println("Đã xóa 1 lần");
-            showDeligence(index);
+            System.out.println("Đã giảm 1 lần đi muộn");
+            showDiligence(index);
             try {
                 writeFile("diligence.txt");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            System.err.println("Không thể xóa khi số lần đi muộn đã bằng 0");
+            System.err.println("Không thể giảm khi số lần đi muộn đã bằng 0");
+        }
+    }
+
+    public void resetDiligence() {
+        for (int i = 0; i < diligences.size(); i++) {
+            diligences.get(i).setDayOff(0);
+            diligences.get(i).setLateTime(0);
+            try {
+                writeFile("diligence.txt");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -114,6 +128,7 @@ public class DiligenceManagement implements GeneralManagement<Diligence>, ReadFi
             e.printStackTrace();
         }
     }
+
 
     public void deleteDiligence(int index) {
         diligences.remove(index);
@@ -132,13 +147,10 @@ public class DiligenceManagement implements GeneralManagement<Diligence>, ReadFi
         return diligences.get(index).getLateTime();
     }
 
-    public void showDeligence(int index) {
+    public void showDiligence(int index) {
         System.out.println(diligences.get(index));
     }
 
-    public int size() {
-        return diligenceManagement.size();
-    }
 
     @Override
     public void readFile(String path) throws IOException, ClassNotFoundException {
@@ -155,15 +167,6 @@ public class DiligenceManagement implements GeneralManagement<Diligence>, ReadFi
     }
 
 
-    @Override
-    public void displayAll() {
-        for (Diligence diligence : diligences) {
-            System.out.println(diligence);
-        }
-    }
-
-
-    @Override
     public void addNew(Diligence diligence) {
         diligences.add(diligence);
         try {
@@ -172,24 +175,4 @@ public class DiligenceManagement implements GeneralManagement<Diligence>, ReadFi
             e.printStackTrace();
         }
     }
-
-    @Override
-    public void updateByName(String name, Diligence diligence) {
-
-    }
-
-    @Override
-    public boolean deleteByName(String name) {
-        return false;
-    }
-
-    @Override
-    public Diligence getByName(String name) {
-        return null;
-    }
-
-    public int findById(String id) {
-        return staffManagement.findById(id);
-    }
-
 }
