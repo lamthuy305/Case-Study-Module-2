@@ -8,7 +8,8 @@ import java.util.Scanner;
 public class UserMenu {
     Scanner scanner = new Scanner(System.in);
     UserManagement userManagement = UserManagement.getInstance();
-    public void run(String username) {
+
+    public void run() {
         int choiceUserMenu = -1;
         do {
             menu();
@@ -19,7 +20,7 @@ public class UserMenu {
             switch (choiceUserMenu) {
                 case 1: {
                     System.out.println("Hiển thị danh sách User đã có");
-                    userManagement.displayAll();
+                    userManagement.displayUserAll();
                     break;
                 }
                 case 2: {
@@ -27,7 +28,7 @@ public class UserMenu {
                     break;
                 }
                 case 3: {
-                    updatepassword(userManagement);
+                    updatePassword(userManagement);
                     break;
                 }
                 case 4: {
@@ -38,8 +39,12 @@ public class UserMenu {
                     searchUser(userManagement);
                     break;
                 }
-                default:{
-                    System.out.println("Nhập sai, mời nhập lại");
+                case 0: {
+                    System.err.println("Quay lại !!!\n");
+                    break;
+                }
+                default: {
+                    System.err.println("Nhập sai, mời nhập lại\n");
                 }
             }
 
@@ -51,7 +56,7 @@ public class UserMenu {
     private void menu() {
         System.out.println("1. Hiển thị danh sách User đã có");
         System.out.println("2. Thêm User mới");
-        System.out.println("3. Cập nhật password");
+        System.out.println("3. Cập nhật Password");
         System.out.println("4. Xóa User");
         System.out.println("5. Tìm kiếm User");
         System.out.println("0. Quay lại");
@@ -61,7 +66,7 @@ public class UserMenu {
     private void doRegister() {
         System.out.println("Đăng ký tài khoản mới!");
         User user = createUser();
-        userManagement.register(user);
+        userManagement.addNewUser(user);
     }
 
 
@@ -78,14 +83,12 @@ public class UserMenu {
     private String inputPassword() {
         String password;
         do {
-            System.out.println("Nhập mật khẩu (6-12 ký tự):");
+            System.out.println("Nhập mật khẩu (6-12 ký tự, bao gồm ít nhất 1 chữ cái, ít nhất 1 số):");
             password = scanner.nextLine();
-            if (password.length() < 6) {
-                System.err.println("Mật khẩu phải có ít nhất 6 ký tự!");
-            } else if (password.length() > 12) {
-                System.err.println("Mật khẩu chỉ được phép tối đa 12 ký tự!");
+            if (userManagement.isPassword(password) == false) {
+                System.err.println("Mật khẩu phải từ 6-12 ký tự, bao gồm ít nhất 1 chữ cái, ít nhất 1 số");
             }
-        } while (password.length() < 6 || password.length() > 12);
+        } while (userManagement.isPassword(password) == false);
         return password;
     }
 
@@ -102,30 +105,40 @@ public class UserMenu {
             } else if (userManagement.checkUsernameExist(username)) {
                 System.err.println("Tài khoản này đã được đăng ký!");
             }
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
         } while (username.length() < 6 || username.length() > 12 || userManagement.checkUsernameExist(username));
         return username;
     }
 
 
-    private void updatepassword(UserManagement userManagement) {
+    private void updatePassword(UserManagement userManagement) {
         System.out.println("Đổi password");
         System.out.println("Nhập tên username cần đổi password");
         String username = scanner.nextLine();
-        int index = userManagement.findusername(username);
+        System.out.println("User --- " + userManagement.getUserByUserName(username));
+        int index = userManagement.findUserByUserName(username);
         if (index != -1) {
-            String name = userManagement.findname(index);
-            System.out.println("Nhập password mới");
-            String password = scanner.nextLine();
-            User user = new User(name,username, password);
-            userManagement.updateByName(username, user);
+            String name = userManagement.findName(index);
+            String passwordOld = userManagement.findPassword(index);
+            String password;
+            do {
+                do {
+                    System.out.println("Nhập password mới(6-12 ký tự, bao gồm ít nhất 1 chữ cái, ít nhất 1 số): ");
+                    password = scanner.nextLine();
+                    if (password.equals(passwordOld)) {
+                        System.out.println("Mật khẩu mới không được giống mật khẩu cũ");
+                    }
+                }while (password.equals(passwordOld));
+
+                if (userManagement.isPassword(password) == false) {
+                    System.err.println("Mật khẩu phải từ 6-12 ký tự, bao gồm ít nhất 1 chữ cái, ít nhất 1 số");
+                }
+            } while (userManagement.isPassword(password) == false);
+
+            User user = new User(name, username, password);
+            userManagement.updateUserByUserName(username, user);
             System.out.println("Đổi thành công!");
         } else {
-            System.out.println("Cập nhật bị lỗi do không tồn tại Username cần tìm!");
+            System.err.println("Cập nhật bị lỗi do không tồn tại Username cần tìm!");
         }
     }
 
@@ -134,11 +147,11 @@ public class UserMenu {
         System.out.println("Xóa User");
         System.out.println("Nhập username cần xóa");
         String username = scanner.nextLine();
-        boolean isDeleted = userManagement.deleteByName(username);
+        boolean isDeleted = userManagement.deleteUserByUserName(username);
         if (isDeleted) {
             System.out.println("Xóa thành công!");
         } else {
-            System.out.println("Xóa lỗi do tên nhân viên không tồn tại!");
+            System.err.println("Xóa lỗi do User không tồn tại!");
         }
     }
 
@@ -147,11 +160,11 @@ public class UserMenu {
         System.out.println("Tìm kiếm User");
         System.out.println("Nhập username cần tìm");
         String username = scanner.nextLine();
-        int index = userManagement.findusername(username);
+        int index = userManagement.findUserByUserName(username);
         if (index != -1) {
-            System.out.println("User cần tìm: " + userManagement.getByName(username));
+            System.out.println("User cần tìm: " + userManagement.getUserByUserName(username));
         } else {
-            System.out.println("Không tìm thấy");
+            System.err.println("Không tìm thấy do User không tồn tại");
         }
     }
 }

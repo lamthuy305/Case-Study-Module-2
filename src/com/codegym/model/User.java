@@ -44,6 +44,6 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return this.name + ", " + this.username + ", " + this.password;
+        return "Họ và tên: "+this.name + ", tên tài khoản: " + this.username + ", mật khẩu: " + this.password;
     }
 }

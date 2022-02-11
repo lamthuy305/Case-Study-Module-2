@@ -29,8 +29,8 @@ public class Login{
                 String name = "Admin";
                 managementMenu.run(name, username);
             } else {
-                int index = userManagement.findusername(username);
-                String name = userManagement.findname(index);
+                int index = userManagement.findUserByUserName(username);
+                String name = userManagement.findName(index);
                 managementMenu.run(name, username);
             }
         } else {

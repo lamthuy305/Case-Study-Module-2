@@ -51,8 +51,12 @@ public class DiligenceMenu {
                                     diligenceManagement.removeLateTime(index);
                                     break;
                                 }
+                                case 0: {
+                                    System.err.println("Quay lại !!! \n");
+                                    break;
+                                }
                                 default:{
-                                    System.out.println("Nhập sai, mời nhập lại");
+                                    System.err.println("Nhập sai, mời nhập lại \n");
                                 }
                             }
                         } while (choiceDiligenceMenu != 0);
@@ -66,8 +70,12 @@ public class DiligenceMenu {
                     System.out.println("Đã reset !!!");
                     break;
                 }
+                case 0: {
+                    System.err.println("Quay lại !!!\n");
+                    break;
+                }
                 default:{
-                    System.out.println("Nhập sai, mời nhập lại");
+                    System.err.println("Nhập sai, mời nhập lại\n");
                 }
             }
         } while (choiceReset != 0);

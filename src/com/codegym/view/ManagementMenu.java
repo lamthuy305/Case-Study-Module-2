@@ -13,15 +13,13 @@ public class ManagementMenu {
 
         if (username.equals("admin")) {
             System.out.println("Đăng nhập thành công !!!");
-            System.out.println("---Xin chào Admin---");
             int choiceAdmin = -1;
             do {
-                menu();
-                System.out.println("Nhập lựa chọn của bạn:");
+                menuAdmin();
                 choiceAdmin = scanner.nextInt();
                 switch (choiceAdmin) {
                     case 1: {
-                        userMenu.run(username);
+                        userMenu.run();
                         break;
                     }
                     case 2: {
@@ -36,49 +34,64 @@ public class ManagementMenu {
                         salaryMenu.run();
                         break;
                     }
-                    default:{
-                        System.out.println("Nhập sai, mời nhập lại");
+                    case 0: {
+                        System.err.println("Đã đăng xuất !!!");
+                        break;
+                    }
+                    default: {
+                        System.err.println("Nhập sai, mời nhập lại");
                     }
                 }
             } while (choiceAdmin != 0);
         } else {
             System.out.println("Đăng nhập thành công !!!");
-            System.out.println("---Xin chào " + name + "---");
-        int choiceMenu = -1;
-        do {
-            System.out.println("1. Quản lý nhân viên");
-            System.out.println("2. Quản lý chuyên cần");
-            System.out.println("3. Quản lý tiền lương nhân viên");
-            System.out.println("0. Đăng xuất");
-            System.out.println("Nhập lựa chọn của bạn:");
-            choiceMenu = scanner.nextInt();
-            switch (choiceMenu){
-                case 1: {
-                    staffMenu.run();
-                    break;
+            int choiceMenu = -1;
+            do {
+
+                menu(name);
+                choiceMenu = scanner.nextInt();
+                switch (choiceMenu) {
+                    case 1: {
+                        staffMenu.run();
+                        break;
+                    }
+                    case 2: {
+                        diligenceMenu.run();
+                        break;
+                    }
+                    case 3: {
+                        salaryMenu.run();
+                        break;
+                    }
+                    case 0: {
+                        System.err.println("Đăng xuất !!!\n");
+                        break;
+                    }
+                    default: {
+                        System.err.println("Nhập sai, mời nhập lại\n");
+                    }
                 }
-                case 2: {
-                    diligenceMenu.run();
-                    break;
-                }
-                case 3: {
-                    salaryMenu.run();
-                    break;
-                }
-                default:{
-                    System.out.println("Nhập sai, mời nhập lại");
-                }
-            }
-        } while (choiceMenu != 0);
+            } while (choiceMenu != 0);
         }
     }
 
+    private void menu(String name) {
+        System.out.println("---Xin chào " + name + "---");
+        System.out.println("1. Quản lý nhân viên");
+        System.out.println("2. Quản lý chuyên cần");
+        System.out.println("3. Quản lý tiền lương nhân viên");
+        System.out.println("0. Đăng xuất");
+        System.out.println("Nhập lựa chọn của bạn:");
+    }
 
-    private void menu() {
+
+    private void menuAdmin() {
+        System.out.println("---Xin chào Admin---");
         System.out.println("1. Quản lý tài khoản đăng nhập");
         System.out.println("2. Quản lý nhân viên");
         System.out.println("3. Quản lý chuyên cần");
         System.out.println("4. Quản lý tiền lương nhân viên");
         System.out.println("0. Đăng xuất");
+        System.out.println("Nhập lựa chọn của bạn:");
     }
 }

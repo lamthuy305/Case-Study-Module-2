@@ -14,18 +14,15 @@ public class Staff implements Serializable {
 
     private boolean fulltime;
 
-    private boolean on;
-
     public Staff() {
     }
 
-    public Staff(String id, String name, String phone, String hometown, boolean fulltime, boolean on) {
+    public Staff(String id, String name, String phone, String hometown, boolean fulltime) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.hometown = hometown;
         this.fulltime = fulltime;
-        this.on = on;
     }
 
     public String getId() {
@@ -68,19 +65,10 @@ public class Staff implements Serializable {
         this.fulltime = fulltime;
     }
 
-    public boolean isOn() {
-        return on;
-    }
-
-    public void setOn(boolean on) {
-        this.on = on;
-    }
 
     @Override
     public String toString() {
-        if (fulltime && on) return this.id + ", " + this.name + ", " + this.phone + ", " + this.hometown+", fulltime";
-        if (fulltime == false && on == true) return this.id + ", " + this.name + ", " + this.phone + ", " + this.hometown+", parttime";
-        if (fulltime == false && on == false) return this.id + ", " + this.name + ", " + this.phone + ", " + this.hometown+", parttime, đã nghỉ việc";
-        return this.id + ", " + this.name + ", " + this.phone + ", " + this.hometown+", fulltime, đã nghỉ việc";
+        if (fulltime) return "ID: "+this.id + ", Họ tên: " + this.name + ", SĐT: " + this.phone + ", quê quán: " + this.hometown + ", làm việc fulltime";
+        return "ID: "+this.id + ", Họ tên: " + this.name + ", SĐT: " + this.phone + ", quê quán: " + this.hometown + ", làm việc parttime";
     }
 }
