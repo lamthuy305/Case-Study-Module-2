@@ -16,7 +16,6 @@ public class UserMenu {
             System.out.println("Nhập lựa chọn của bạn");
             choiceUserMenu = scanner.nextInt();
             scanner.nextLine();
-
             switch (choiceUserMenu) {
                 case 1: {
                     System.out.println("Hiển thị danh sách User đã có");
@@ -28,7 +27,49 @@ public class UserMenu {
                     break;
                 }
                 case 3: {
-                    updatePassword(userManagement);
+                    int choicePassword = -1;
+                    do {
+                        System.out.println("Đổi password");
+                        System.out.println("1. Đổi password tài khoản admin");
+                        System.out.println("2. Đổi password theo username");
+                        System.out.println("0. Quay lại");
+                        System.out.println("Nhập lựa chọn của bạn");
+                        choicePassword = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (choicePassword) {
+                            case 1: {
+                                String newPassword;
+                                do {
+                                    System.out.println("Nhập password mới cho tài khoản admin");
+                                    newPassword = scanner.nextLine();
+                                    if (userManagement.checkPasswordAdmin(newPassword)){
+                                        System.err.println("Password mới không được trùng với password cũ \n");
+                                        try {
+                                            Thread.sleep(100);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }while (userManagement.checkPasswordAdmin(newPassword));
+                                userManagement.updateUserAdmin(newPassword);
+                                System.out.println("Đổi password tài khoản Admin thành công");
+                                break;
+                            }
+                            case 2: {
+                                System.out.println("Nhập tên username cần đổi password");
+                                String username = scanner.nextLine();
+                                updatePassword(userManagement, username);
+                                break;
+                            }
+                            case 0: {
+                                System.err.println("Quay lại\n");
+                                break;
+                            }
+                            default: {
+                                System.err.println("Nhập sai, mời nhập lại\n");
+                            }
+                        }
+                    } while (choicePassword != 0);
                     break;
                 }
                 case 4: {
@@ -85,10 +126,10 @@ public class UserMenu {
         do {
             System.out.println("Nhập mật khẩu (6-12 ký tự, bao gồm ít nhất 1 chữ cái, ít nhất 1 số):");
             password = scanner.nextLine();
-            if (userManagement.isPassword(password) == false) {
+            if (!userManagement.isPassword(password)) {
                 System.err.println("Mật khẩu phải từ 6-12 ký tự, bao gồm ít nhất 1 chữ cái, ít nhất 1 số");
             }
-        } while (userManagement.isPassword(password) == false);
+        } while (!userManagement.isPassword(password));
         return password;
     }
 
@@ -110,10 +151,7 @@ public class UserMenu {
     }
 
 
-    private void updatePassword(UserManagement userManagement) {
-        System.out.println("Đổi password");
-        System.out.println("Nhập tên username cần đổi password");
-        String username = scanner.nextLine();
+    public void updatePassword(UserManagement userManagement, String username) {
         System.out.println("User --- " + userManagement.getUserByUserName(username));
         int index = userManagement.findUserByUserName(username);
         if (index != -1) {
@@ -125,15 +163,18 @@ public class UserMenu {
                     System.out.println("Nhập password mới(6-12 ký tự, bao gồm ít nhất 1 chữ cái, ít nhất 1 số): ");
                     password = scanner.nextLine();
                     if (password.equals(passwordOld)) {
-                        System.out.println("Mật khẩu mới không được giống mật khẩu cũ");
+                        System.err.println("Mật khẩu mới không được giống mật khẩu cũ \n");
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }while (password.equals(passwordOld));
-
-                if (userManagement.isPassword(password) == false) {
+                } while (password.equals(passwordOld));
+                if (!userManagement.isPassword(password)) {
                     System.err.println("Mật khẩu phải từ 6-12 ký tự, bao gồm ít nhất 1 chữ cái, ít nhất 1 số");
                 }
-            } while (userManagement.isPassword(password) == false);
-
+            } while (!userManagement.isPassword(password));
             User user = new User(name, username, password);
             userManagement.updateUserByUserName(username, user);
             System.out.println("Đổi thành công!");

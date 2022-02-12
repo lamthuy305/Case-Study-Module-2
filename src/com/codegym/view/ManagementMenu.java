@@ -1,10 +1,12 @@
 package com.codegym.view;
 
+import com.codegym.controller.UserManagement;
+
 import java.util.Scanner;
 
 public class ManagementMenu {
     public static Scanner scanner = new Scanner(System.in);
-
+    UserManagement userManagement = UserManagement.getInstance();
     public void run(String name, String username) {
         UserMenu userMenu = new UserMenu();
         StaffMenu staffMenu = new StaffMenu();
@@ -15,7 +17,9 @@ public class ManagementMenu {
             System.out.println("Đăng nhập thành công !!!");
             int choiceAdmin = -1;
             do {
-                menuAdmin();
+                System.out.println("---Xin chào Admin---");
+                System.out.println("1. Quản lý tài khoản đăng nhập");
+                menu();
                 choiceAdmin = scanner.nextInt();
                 switch (choiceAdmin) {
                     case 1: {
@@ -47,19 +51,24 @@ public class ManagementMenu {
             System.out.println("Đăng nhập thành công !!!");
             int choiceMenu = -1;
             do {
-
-                menu(name);
+                System.out.println("---Xin chào " + name + "---");
+                System.out.println("1. Đổi mật khẩu");
+                menu();
                 choiceMenu = scanner.nextInt();
                 switch (choiceMenu) {
                     case 1: {
-                        staffMenu.run();
+                        userMenu.updatePassword(userManagement,username);
                         break;
                     }
                     case 2: {
-                        diligenceMenu.run();
+                        staffMenu.run();
                         break;
                     }
                     case 3: {
+                        diligenceMenu.run();
+                        break;
+                    }
+                    case 4: {
                         salaryMenu.run();
                         break;
                     }
@@ -75,23 +84,12 @@ public class ManagementMenu {
         }
     }
 
-    private void menu(String name) {
-        System.out.println("---Xin chào " + name + "---");
-        System.out.println("1. Quản lý nhân viên");
-        System.out.println("2. Quản lý chuyên cần");
-        System.out.println("3. Quản lý tiền lương nhân viên");
-        System.out.println("0. Đăng xuất");
-        System.out.println("Nhập lựa chọn của bạn:");
-    }
-
-
-    private void menuAdmin() {
-        System.out.println("---Xin chào Admin---");
-        System.out.println("1. Quản lý tài khoản đăng nhập");
+    private void menu() {
         System.out.println("2. Quản lý nhân viên");
         System.out.println("3. Quản lý chuyên cần");
         System.out.println("4. Quản lý tiền lương nhân viên");
         System.out.println("0. Đăng xuất");
         System.out.println("Nhập lựa chọn của bạn:");
     }
+
 }

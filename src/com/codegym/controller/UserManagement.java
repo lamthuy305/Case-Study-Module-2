@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 public class UserManagement implements ReadFile, WriteFile {
 
+    public static String USERNAME_ADMIN = "admin";
+    private String PASSWORD_ADMIN;
     private static UserManagement userManagement;
 
     private List<User> users = new ArrayList<>();
@@ -31,12 +33,15 @@ public class UserManagement implements ReadFile, WriteFile {
         return userManagement;
     }
 
+    public int size() {
+        return users.size();
+    }
 
     public String findName(int index) {
         return users.get(index).getName();
     }
 
-    public String findPassword(int index){
+    public String findPassword(int index) {
         return users.get(index).getPassword();
     }
 
@@ -68,8 +73,10 @@ public class UserManagement implements ReadFile, WriteFile {
         return false;
     }
 
+
     public boolean checkUserLogin(String username, String password) {
-        if (username.equals("admin") && password.equals("admin")) return true;
+        PASSWORD_ADMIN = users.get(0).getPassword();
+        if (username.equals(USERNAME_ADMIN) && password.equals(PASSWORD_ADMIN)) return true;
         for (int i = 0; i < users.size(); i++) {
             if (username.equals(users.get(i).getUsername()) && password.equals(users.get(i).getPassword())) return true;
         }
@@ -78,8 +85,8 @@ public class UserManagement implements ReadFile, WriteFile {
 
 
     public void displayUserAll() {
-        for (User user : users) {
-            System.out.println(user);
+        for (int i = 1; i < size(); i++) {
+            System.out.println(users.get(i));
         }
     }
 
@@ -115,6 +122,26 @@ public class UserManagement implements ReadFile, WriteFile {
         int index = findUserByUserName(username);
         return users.get(index);
     }
+
+
+    public boolean checkPasswordAdmin(String newPassword) {
+        PASSWORD_ADMIN = users.get(0).getPassword();
+        if (newPassword.equals(PASSWORD_ADMIN)) return true;
+        return false;
+    }
+
+
+    public void updateUserAdmin(String newPassword) {
+        PASSWORD_ADMIN = newPassword;
+        User user = new User("Admin", USERNAME_ADMIN, PASSWORD_ADMIN);
+        users.set(0, user);
+        try {
+            writeFile("user.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public boolean isPassword(String password) {
         String regex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,12}$";

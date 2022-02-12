@@ -165,10 +165,10 @@ public class StaffMenu {
                 }
             }while (staffManagement.checkIDStaff(id));
 
-            if (staffManagement.isID(id) == false) {
+            if (!staffManagement.isID(id)) {
                 System.err.println("ID chưa đúng định dạng");
             }
-        } while (staffManagement.isID(id) == false);
+        } while (!staffManagement.isID(id));
         System.out.println("Nhập tên nhân viên:");
         String name = scanner.nextLine();
         String phone;

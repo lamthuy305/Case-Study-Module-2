@@ -13,12 +13,8 @@ public class DiligenceMenu {
         System.out.println("---Diligence Management---");
         int choiceReset = -1;
         do {
-            System.out.println("1. Quản lý trong tháng");
-            System.out.println("2. Reset sang tháng mới");
-            System.out.println("0. Thoát");
-            System.out.println("Nhập lựa chọn");
+            menu();
             choiceReset = scanner.nextInt();
-
             switch (choiceReset) {
                 case 1: {
                     scanner.nextLine();
@@ -29,7 +25,7 @@ public class DiligenceMenu {
                         diligenceManagement.showDiligence(index);
                         int choiceDiligenceMenu = -1;
                         do {
-                            menu();
+                            menuDiligence();
                             System.out.println("Nhập lựa chọn của bạn");
                             choiceDiligenceMenu = scanner.nextInt();
                             scanner.nextLine();
@@ -82,6 +78,14 @@ public class DiligenceMenu {
     }
 
     private void menu() {
+        System.out.println("1. Quản lý trong tháng");
+        System.out.println("2. Reset sang tháng mới");
+        System.out.println("0. Thoát");
+        System.out.println("Nhập lựa chọn");
+    }
+
+
+    private void menuDiligence() {
         System.out.println("1. Thêm lần nghỉ  ");
         System.out.println("2. Xóa lần nghỉ");
         System.out.println("3. Thêm lần đi muộn  ");

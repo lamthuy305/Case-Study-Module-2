@@ -18,23 +18,26 @@ public class Login{
 
 
     private void doLogin() {
-        System.out.println("---Đăng nhập---");
-        System.out.println("Nhập username:");
-        String username = scanner.nextLine();
-        System.out.println("Nhập password:");
-        String password = scanner.nextLine();
-        boolean isLogin = userManagement.checkUserLogin(username, password);
-        if (isLogin) {
-            if (username.equals("admin")) {
-                String name = "Admin";
-                managementMenu.run(name, username);
+        boolean isLogin = false;
+        do {
+            System.out.println("---Đăng nhập---");
+            System.out.println("Nhập username:");
+            String username = scanner.nextLine();
+            System.out.println("Nhập password:");
+            String password = scanner.nextLine();
+            isLogin = userManagement.checkUserLogin(username, password);
+            if (isLogin) {
+                if (username.equals("admin")) {
+                    String name = "Admin";
+                    managementMenu.run(name, username);
+                } else {
+                    int index = userManagement.findUserByUserName(username);
+                    String name = userManagement.findName(index);
+                    managementMenu.run(name, username);
+                }
             } else {
-                int index = userManagement.findUserByUserName(username);
-                String name = userManagement.findName(index);
-                managementMenu.run(name, username);
+                System.err.println("Username hoặc password không đúng!\n");
             }
-        } else {
-            System.err.println("Username hoặc password không đúng!");
-        }
+        }while (!isLogin);
     }
 }

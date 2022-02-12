@@ -62,7 +62,7 @@ public class SalaryMenu {
         } else {
             setSalaryPartTime(dayOff, lateTime);
         }
-        System.out.println(staffManagement.displayStaff(index) + ", lương " + salary);
+        System.out.println(staffManagement.displayStaff(index) + ", lương tháng " + salary);
     }
 
 
@@ -79,10 +79,11 @@ public class SalaryMenu {
             salary += BONUSMONEY_PARTTIME;   //nghỉ dưới 2 ngày và đi muộn dưới 3 lần thì đc thưởng chuyên cần
         }
         if (dayOff > 0) {
-            dayOff--;           //Mỗi tháng đc nghỉ 1 ngày
+            dayOff--;           //Mỗi tháng đc nghỉ 1 ngày không trừ lương
         }
         salary += SALARY_PARTTIME - dayOff * DAYOFF_PARTTIME - lateTime * LATETIME_PARTTIME;
     }
+
 
     public void setSalaryFullTime(int dayOff, int lateTime) {
         if (dayOff < 2 && lateTime < 3) {
